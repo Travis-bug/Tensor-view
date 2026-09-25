@@ -154,7 +154,7 @@ button:hover { background: #0052a3; }
     background: rgba(0, 0, 0, 0.8);
     border-radius: 4px;
     pointer-events: none;
-    margin-top: -35px; }\\\\\
+    margin-top: -35px; }
 
 .axis-label {
     color: #ffffff;
