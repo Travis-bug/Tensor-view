@@ -1,0 +1,168 @@
+body {
+    margin: 0;
+    display: flex;
+    height: 100vh;
+    background-color: #121212;
+    color: #ffffff;
+    font-family: system-ui, sans-serif;
+    overflow: hidden;
+}
+
+#sidebar {
+    width: 370px;
+    background: #1e1e1e;
+    padding: 20px;
+    display: flex;
+    flex-direction: column;
+    gap: 15px;
+    overflow-y: auto;
+    box-shadow: 2px 0 10px rgba(0,0,0,0.5);
+    z-index: 10; position: relative;
+}
+#canvas-container {
+    flex-grow: 1;
+    position: relative;
+}
+
+h2, h3 {
+    margin: 0 0 10px 0;
+    color: #e0e0e0;
+}
+
+.form-group {
+    display: flex;
+    flex-direction: column;
+    gap: 5px;
+}
+
+input[type="text"] {
+    padding: 8px;
+    background: #2a2a2a;
+    border: 1px solid #444;
+    color: white;
+    border-radius: 4px;
+}
+
+button {
+    padding: 10px;
+    background: #0066cc;
+    color: white;
+    border: none;
+    border-radius: 4px;
+    cursor: pointer;
+    font-weight: bold;
+}
+
+button:hover { background: #0052a3; }
+#clear-btn { background: #990000; }
+#clear-btn:hover { background: #cc0000; }
+
+#data-list {
+    display: flex;
+    flex-direction: column;
+    gap: 8px;
+}
+
+/* Updated Card to hold the switch on the right */
+.interaction-card {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    background: #2a2a2a;
+    padding: 10px;
+    border-radius: 4px;
+    border-left: 4px solid #555;
+    font-size: 14px;
+}
+
+.card-left {
+    display: flex;
+    align-items: center;
+    gap: 10px;
+}
+
+.interaction-card input[type="checkbox"].node-check {
+    cursor: pointer;
+    width: 16px;
+    height: 16px;
+    accent-color: #0066cc;
+}
+
+/* Toggle Switch Styles */
+.switch {
+    position: relative;
+    display: inline-block;
+    width: 44px;
+    height: 24px;
+    flex-shrink: 0;
+}
+
+.switch input {
+    opacity: 0;
+    width: 0;
+    height: 0;
+}
+
+.switch-slider {
+    position: absolute;
+    cursor: pointer;
+    top: 0;
+    left: 0;
+    right: 0;
+    bottom: 0;
+    background-color: #444;
+    transition: .3s;
+    border-radius: 24px;
+    border: 2px solid transparent;
+}
+
+.switch-slider:before {
+    position: absolute;
+    content: "";
+    height: 16px;
+    width: 16px;
+    left: 2px;
+    bottom: 2px;
+    background-color: white;
+    transition: .3s;
+    border-radius: 50%;
+}
+
+.switch input:checked + .switch-slider:before { transform: translateX(20px); }
+
+#legend { margin-top: 10px;
+    display: flex;
+    flex-direction: column;
+    gap: 5px;
+}
+
+.legend-item { display: flex;
+    align-items: center;
+    gap: 10px;
+    font-size: 14px;
+}
+.color-box {
+    width: 15px;
+    height: 15px;
+    border-radius: 3px; }
+
+.node-label {
+    color: white;
+    font-weight: bold;
+    font-size: 13px;
+    padding: 2px 6px;
+    background: rgba(0, 0, 0, 0.8);
+    border-radius: 4px;
+    pointer-events: none;
+    margin-top: -35px; }\\\\\
+
+.axis-label {
+    color: #ffffff;
+   ]
+     font-weight: 800;
+     ont-size: 16px;
+     fpointer-events: none;
+     text-shadow: 2px 2px 4px rgba(0,0,0,0.8); }
+.axis-x { color: #ff5555; }
+.axis-y { color: #55ff55; }
+.axis-z { color: #5555ff; }
