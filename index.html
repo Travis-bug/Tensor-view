@@ -1,0 +1,47 @@
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Dynamic 3D Tensor Builder</title>
+
+</head>
+
+<body>
+<div id="sidebar">
+    <h2>Tensor Map Builder</h2>
+
+    <form id="add-form">
+        <div class="form-group">
+            <input type="text" id="doer" required placeholder="Doer (e.g., P1)">
+        </div>
+        <div class="form-group">
+            <input type="text" id="action" required placeholder="Action (e.g., Slap)">
+        </div>
+        <div class="form-group">
+            <input type="text" id="receiver" required placeholder="Receiver (e.g., P2)">
+        </div>
+        <button type="submit">Add to Map</button>
+    </form>
+
+    <button id="clear-btn">Clear All Data</button>
+
+    <div id="legend">
+        <h3>Action Legend</h3>
+        <div id="legend-content"></div>
+    </div>
+
+    <div>
+        <h3 style="display: flex; justify-content: space-between;">
+            <span>Node</span>
+            <span style="font-size: 12px; font-weight: normal; color: #aaa; padding-top: 4px;">Grid Layer</span>
+        </h3>
+        <div id="data-list"></div>
+    </div>
+</div>
+
+<div id="canvas-container"></div>
+
+<script type="module" src="/src/main.ts"></script>
+</body>
+
+</html>
