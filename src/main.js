@@ -32,6 +32,9 @@ const inputReceiver = document.getElementById('receiver');
 const scene = new THREE.Scene();
 const camera = new THREE.PerspectiveCamera(60, container.clientWidth / container.clientHeight, 0.1, 1000);
 camera.position.set(12, 12, 18);
+// On tall, narrow screens (portrait phones) pull the camera back so the whole tensor fits
+const startAspect = container.clientWidth / container.clientHeight;
+if (startAspect < 1) camera.position.multiplyScalar(Math.min(1 / startAspect, 2.4));
 
 const ambientLight = new THREE.AmbientLight(0xffffff, 0.6);
 scene.add(ambientLight);
@@ -316,7 +319,8 @@ function setSidebarOpen(open) {
     menuToggle.setAttribute('aria-expanded', String(open));
 }
 
-setSidebarOpen(!window.matchMedia('(max-width: 768px)').matches);
+// Keep this query in sync with the phone media query in style.css
+setSidebarOpen(!window.matchMedia('(max-width: 768px), (max-height: 500px)').matches);
 menuToggle.addEventListener('click', () => {
     setSidebarOpen(document.body.classList.contains('sidebar-closed'));
 });
@@ -325,6 +329,13 @@ menuToggle.addEventListener('click', () => {
 const welcome = document.getElementById('welcome');
 welcome.addEventListener('animationend', (e) => {
     if (e.target === welcome) welcome.remove();
+});
+
+// Fade the welcome screen out once the tensor is ready, but show it for at least ~2 seconds.
+// performance.now() counts from when the page started loading.
+const MIN_WELCOME_MS = 2200;
+requestAnimationFrame(() => {
+    setTimeout(() => welcome.classList.add('hide'), Math.max(0, MIN_WELCOME_MS - performance.now()));
 });
 
 const clock = new THREE.Clock();

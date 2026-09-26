@@ -62,8 +62,8 @@ body.sidebar-closed #sidebar { margin-left: -370px; }
     border-radius: 1px;
 }
 
-/* Phones: the sidebar floats over the tensor instead of squeezing it */
-@media (max-width: 768px) {
+/* Phones (portrait or sideways): the sidebar floats over the tensor instead of squeezing it */
+@media (max-width: 768px), (max-height: 500px) {
     #sidebar {
         position: fixed;
         top: 0;
@@ -91,8 +91,12 @@ body.sidebar-closed #sidebar { margin-left: -370px; }
     padding: 24px;
     text-align: center;
     background: #121212;
-    /* Hold for a moment, then fade the whole screen out quickly */
-    animation: welcome-out 0.7s cubic-bezier(0.4, 0, 0.2, 1) 2.2s forwards;
+    /* Safety net: fades out on its own if the script never loads */
+    animation: welcome-out 0.7s cubic-bezier(0.4, 0, 0.2, 1) 8s forwards;
+}
+/* Added by the script once the tensor has drawn its first frame */
+#welcome.hide {
+    animation: welcome-out-now 0.7s cubic-bezier(0.4, 0, 0.2, 1) forwards;
 }
 .welcome-title {
     margin: 0;
@@ -118,10 +122,14 @@ body.sidebar-closed #sidebar { margin-left: -370px; }
     from { opacity: 1; transform: scale(1); }
     to   { opacity: 0; transform: scale(1.04); visibility: hidden; }
 }
+@keyframes welcome-out-now {
+    from { opacity: 1; transform: scale(1); }
+    to   { opacity: 0; transform: scale(1.04); visibility: hidden; }
+}
 /* People who turn off motion in their settings get a plain, faster fade */
 @media (prefers-reduced-motion: reduce) {
     .welcome-title, .welcome-thanks { animation-name: welcome-fade; }
-    #welcome { animation-duration: 0.4s; }
+    #welcome, #welcome.hide { animation-duration: 0.4s; }
     @keyframes welcome-fade { from { opacity: 0; } to { opacity: 1; } }
 }
 
