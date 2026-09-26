@@ -2,15 +2,7 @@ import * as THREE from 'three';
 import { OrbitControls } from 'three/examples/jsm/controls/OrbitControls.js';
 import { CSS2DRenderer, CSS2DObject } from 'three/examples/jsm/renderers/CSS2DRenderer.js';
 
-interface Interaction {
-    id: string;
-    doer: string;
-    action: string;
-    receiver: string;
-    visible: boolean; // Controls the specific 3D node
-}
-
-let interactions: Interaction[] = [
+let interactions = [
     { id: "1", doer: "P1", action: "Slap", receiver: "P2", visible: true },
     { id: "2", doer: "P2", action: "Punch", receiver: "P3", visible: true },
     { id: "3", doer: "P3", action: "Kick", receiver: "P4", visible: true },
@@ -20,22 +12,22 @@ let interactions: Interaction[] = [
 ];
 
 // State for the layer (glass matrix) visibility toggles
-let layerVisibility: Record<string, boolean> = {
+let layerVisibility = {
     "Slap": true, "Punch": true, "Kick": true, "Spit": true, "Shoot": true, "Elbow": true
 };
 
-const colors: number[] = [0xff4444, 0xffaa00, 0x44ff44, 0x44aaff, 0xaa44ff, 0xff44aa, 0x00ffff, 0xff00ff, 0xffff00];
-let activeMeshes: THREE.Object3D[] = [];
-let animatedWireframes: THREE.Mesh[] = [];
+const colors = [0xff4444, 0xffaa00, 0x44ff44, 0x44aaff, 0xaa44ff, 0xff44aa, 0x00ffff, 0xff00ff, 0xffff00];
+let activeMeshes = [];
+let animatedWireframes = [];
 
-const container = document.getElementById('canvas-container') as HTMLDivElement;
-const listDiv = document.getElementById('data-list') as HTMLDivElement;
-const legendDiv = document.getElementById('legend-content') as HTMLDivElement;
-const addForm = document.getElementById('add-form') as HTMLFormElement;
-const clearBtn = document.getElementById('clear-btn') as HTMLButtonElement;
-const inputDoer = document.getElementById('doer') as HTMLInputElement;
-const inputAction = document.getElementById('action') as HTMLInputElement;
-const inputReceiver = document.getElementById('receiver') as HTMLInputElement;
+const container = document.getElementById('canvas-container');
+const listDiv = document.getElementById('data-list');
+const legendDiv = document.getElementById('legend-content');
+const addForm = document.getElementById('add-form');
+const clearBtn = document.getElementById('clear-btn');
+const inputDoer = document.getElementById('doer');
+const inputAction = document.getElementById('action');
+const inputReceiver = document.getElementById('receiver');
 
 const scene = new THREE.Scene();
 const camera = new THREE.PerspectiveCamera(60, container.clientWidth / container.clientHeight, 0.1, 1000);
@@ -61,7 +53,7 @@ container.appendChild(labelRenderer.domElement);
 const controls = new OrbitControls(camera, renderer.domElement);
 controls.enableDamping = true;
 
-function updateVisualization(): void {
+function updateVisualization() {
     activeMeshes.forEach(mesh => {
         mesh.traverse(child => {
             if (child instanceof CSS2DObject && child.element.parentNode) {
@@ -78,18 +70,18 @@ function updateVisualization(): void {
         return;
     }
 
-    const actors: string[] = Array.from(new Set(interactions.flatMap(i => [i.doer, i.receiver])));
-    const actions: string[] = Array.from(new Set(interactions.map(i => i.action)));
+    const actors = Array.from(new Set(interactions.flatMap(i => [i.doer, i.receiver])));
+    const actions = Array.from(new Set(interactions.map(i => i.action)));
 
     // Ensure all actions exist in visibility state
     actions.forEach(a => {
         if (layerVisibility[a] === undefined) layerVisibility[a] = true;
     });
 
-    const gridSize: number = Math.max(actors.length, 2);
-    const offset: number = (gridSize - 1) / 2;
-    const zDepthScale: number = 3;
-    const totalDepth: number = (Math.max(actions.length - 1, 0)) * zDepthScale;
+    const gridSize = Math.max(actors.length, 2);
+    const offset = (gridSize - 1) / 2;
+    const zDepthScale = 3;
+    const totalDepth = (Math.max(actions.length - 1, 0)) * zDepthScale;
 
     // A. Draw Global Bounding Box & Axes (Now strictly separated and padded)
     const padding = 3; // Padding so the grids live *inside* the box
@@ -109,7 +101,7 @@ function updateVisualization(): void {
     const xLabel = new CSS2DObject(xDiv);
     xLabel.position.set(0, -(boxGeoSize/2) - 0.5, (boxGeoDepth/2) + 0.5);
     scene.add(xLabel);
-    activeMeshes.push(xLabel as any);
+    activeMeshes.push(xLabel);
 
     const yDiv = document.createElement('div');
     yDiv.className = 'axis-label axis-y';
@@ -117,7 +109,7 @@ function updateVisualization(): void {
     const yLabel = new CSS2DObject(yDiv);
     yLabel.position.set(-(boxGeoSize/2) - 0.5, 0, (boxGeoDepth/2) + 0.5);
     scene.add(yLabel);
-    activeMeshes.push(yLabel as any);
+    activeMeshes.push(yLabel);
 
     const zDiv = document.createElement('div');
     zDiv.className = 'axis-label axis-z';
@@ -125,7 +117,7 @@ function updateVisualization(): void {
     const zLabel = new CSS2DObject(zDiv);
     zLabel.position.set(-(boxGeoSize/2) - 0.5, (boxGeoSize/2) + 0.5, 0);
     scene.add(zLabel);
-    activeMeshes.push(zLabel as any);
+    activeMeshes.push(zLabel);
 
     const gridDotGeo = new THREE.SphereGeometry(0.06, 8, 8);
     const gridDotMat = new THREE.MeshBasicMaterial({ color: 0x888888 });
@@ -208,7 +200,7 @@ function updateVisualization(): void {
     renderUI(actions);
 }
 
-function renderUI(actions: string[]): void {
+function renderUI(actions) {
     listDiv.innerHTML = '';
     interactions.forEach((item, index) => {
         const layerColorHex = colors[actions.indexOf(item.action) % colors.length].toString(16).padStart(6, '0');
@@ -227,7 +219,7 @@ function renderUI(actions: string[]): void {
         checkbox.className = 'node-check';
         checkbox.checked = item.visible;
         checkbox.addEventListener('change', (e) => {
-            interactions[index].visible = (e.target as HTMLInputElement).checked;
+            interactions[index].visible = e.target.checked;
             updateVisualization();
         });
 
@@ -246,7 +238,7 @@ function renderUI(actions: string[]): void {
         switchInput.checked = layerVisibility[item.action];
         switchInput.addEventListener('change', (e) => {
             // Update state for the entire layer
-            layerVisibility[item.action] = (e.target as HTMLInputElement).checked;
+            layerVisibility[item.action] = e.target.checked;
             updateVisualization();
         });
 
@@ -279,14 +271,14 @@ function renderUI(actions: string[]): void {
 
 
 // Helper function to sanitize user input for the tensor
-function normalizeData(input: string): string {
+function normalizeData(input) {
     return input
         .toLowerCase() // Force everything to lowercase (e.g., "John" -> "john")
         .replace(/\s*\(.*?\)\s*/g, '') // Remove anything inside parentheses, like "(his bsf)"
         .trim(); // Remove accidental spaces at the start or end
 }
 
-addForm.addEventListener('submit', (e: Event) => {
+addForm.addEventListener('submit', (e) => {
     e.preventDefault();
     const doer = normalizeData(inputDoer.value)
     const receiver = normalizeData(inputReceiver.value)
@@ -314,7 +306,7 @@ window.addEventListener('resize', () => {
 
 const clock = new THREE.Clock();
 
-function animate(): void {
+function animate() {
     requestAnimationFrame(animate);
     const elapsedTime = clock.getElapsedTime();
 

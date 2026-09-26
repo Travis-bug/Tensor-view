@@ -44,7 +44,16 @@
 
 <div id="canvas-container"></div>
 
-<script type="module" src="/src/main.ts"></script>
+<!-- Browsers can't resolve bare "three" imports on their own (GitHub Pages has no bundler), so map them to a CDN -->
+<script type="importmap">
+{
+    "imports": {
+        "three": "https://cdn.jsdelivr.net/npm/three@0.186.1/build/three.module.js",
+        "three/examples/jsm/": "https://cdn.jsdelivr.net/npm/three@0.186.1/examples/jsm/"
+    }
+}
+</script>
+<script type="module" src="src/main.js"></script>
 </body>
 
 </html>
