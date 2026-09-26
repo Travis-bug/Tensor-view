@@ -2,6 +2,7 @@ body {
     margin: 0;
     display: flex;
     height: 100vh;
+    height: 100dvh; /* mobile browsers: excludes the address bar */
     background-color: #121212;
     color: #ffffff;
     font-family: system-ui, sans-serif;
@@ -9,7 +10,9 @@ body {
 }
 
 #sidebar {
+    box-sizing: border-box;
     width: 370px;
+    flex-shrink: 0;
     background: #1e1e1e;
     padding: 20px;
     display: flex;
@@ -18,10 +21,108 @@ body {
     overflow-y: auto;
     box-shadow: 2px 0 10px rgba(0,0,0,0.5);
     z-index: 10; position: relative;
+    transition: margin-left 0.3s ease, transform 0.3s ease;
 }
+/* Leave room for the menu button in the sidebar's top-left corner */
+#sidebar h2 {
+    padding-left: 56px;
+    line-height: 44px;
+}
+body.sidebar-closed #sidebar { margin-left: -370px; }
+
 #canvas-container {
     flex-grow: 1;
+    min-width: 0;
     position: relative;
+}
+
+/* Three-line menu button */
+#menu-toggle {
+    position: fixed;
+    top: calc(16px + env(safe-area-inset-top, 0px));
+    left: 16px;
+    z-index: 20;
+    width: 44px;
+    height: 44px;
+    padding: 0;
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
+    gap: 5px;
+    background: rgba(30, 30, 30, 0.9);
+    border: 1px solid #444;
+}
+#menu-toggle:hover { background: #2a2a2a; }
+#menu-toggle span {
+    display: block;
+    width: 22px;
+    height: 2px;
+    background: #fff;
+    border-radius: 1px;
+}
+
+/* Phones: the sidebar floats over the tensor instead of squeezing it */
+@media (max-width: 768px) {
+    #sidebar {
+        position: fixed;
+        top: 0;
+        bottom: 0;
+        left: 0;
+        width: min(370px, 85vw);
+        padding-top: calc(20px + env(safe-area-inset-top, 0px));
+    }
+    body.sidebar-closed #sidebar {
+        margin-left: 0;
+        transform: translateX(-100%);
+        box-shadow: none;
+    }
+}
+
+/* Welcome screen: shown on load, then fades away to reveal the tensor */
+#welcome {
+    position: fixed;
+    inset: 0;
+    z-index: 100;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    padding: 24px;
+    text-align: center;
+    background: #121212;
+    /* Hold for a moment, then fade the whole screen out quickly */
+    animation: welcome-out 0.7s cubic-bezier(0.4, 0, 0.2, 1) 2.2s forwards;
+}
+.welcome-title {
+    margin: 0;
+    font-size: clamp(40px, 12vw, 96px);
+    letter-spacing: 0.15em;
+    animation: welcome-in 0.7s cubic-bezier(0.22, 1, 0.36, 1) both;
+}
+.welcome-thanks {
+    position: absolute;
+    left: 24px;
+    right: 24px;
+    bottom: calc(40px + env(safe-area-inset-bottom, 0px));
+    margin: 0;
+    color: #aaa;
+    font-size: 16px;
+    animation: welcome-in 0.7s cubic-bezier(0.22, 1, 0.36, 1) 0.35s both;
+}
+@keyframes welcome-in {
+    from { opacity: 0; transform: translateY(14px); }
+    to   { opacity: 1; transform: none; }
+}
+@keyframes welcome-out {
+    from { opacity: 1; transform: scale(1); }
+    to   { opacity: 0; transform: scale(1.04); visibility: hidden; }
+}
+/* People who turn off motion in their settings get a plain, faster fade */
+@media (prefers-reduced-motion: reduce) {
+    .welcome-title, .welcome-thanks { animation-name: welcome-fade; }
+    #welcome { animation-duration: 0.4s; }
+    @keyframes welcome-fade { from { opacity: 0; } to { opacity: 1; } }
 }
 
 h2, h3 {
@@ -158,11 +259,10 @@ button:hover { background: #0052a3; }
 
 .axis-label {
     color: #ffffff;
-   ]
-     font-weight: 800;
-     ont-size: 16px;
-     fpointer-events: none;
-     text-shadow: 2px 2px 4px rgba(0,0,0,0.8); }
+    font-weight: 800;
+    font-size: 16px;
+    pointer-events: none;
+    text-shadow: 2px 2px 4px rgba(0,0,0,0.8); }
 .axis-x { color: #ff5555; }
 .axis-y { color: #55ff55; }
 .axis-z { color: #5555ff; }

@@ -297,11 +297,34 @@ clearBtn.addEventListener('click', () => {
     updateVisualization();
 });
 
-window.addEventListener('resize', () => {
-    camera.aspect = container.clientWidth / container.clientHeight;
+// Resize whenever the canvas area changes size: window resizes and the sidebar opening or closing
+new ResizeObserver(() => {
+    const width = container.clientWidth;
+    const height = container.clientHeight;
+    if (width === 0 || height === 0) return;
+    camera.aspect = width / height;
     camera.updateProjectionMatrix();
-    renderer.setSize(container.clientWidth, container.clientHeight);
-    labelRenderer.setSize(container.clientWidth, container.clientHeight);
+    renderer.setSize(width, height);
+    labelRenderer.setSize(width, height);
+}).observe(container);
+
+// Sidebar toggle: starts hidden on phones so visitors see the tensor first
+const menuToggle = document.getElementById('menu-toggle');
+
+function setSidebarOpen(open) {
+    document.body.classList.toggle('sidebar-closed', !open);
+    menuToggle.setAttribute('aria-expanded', String(open));
+}
+
+setSidebarOpen(!window.matchMedia('(max-width: 768px)').matches);
+menuToggle.addEventListener('click', () => {
+    setSidebarOpen(document.body.classList.contains('sidebar-closed'));
+});
+
+// Remove the welcome screen once its fade-out finishes
+const welcome = document.getElementById('welcome');
+welcome.addEventListener('animationend', (e) => {
+    if (e.target === welcome) welcome.remove();
 });
 
 const clock = new THREE.Clock();
