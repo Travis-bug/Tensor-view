@@ -84,7 +84,7 @@ function updateVisualization() {
     const gridSize = Math.max(actors.length, 2);
     const offset = (gridSize - 1) / 2;
     const zDepthScale = 3;
-    const totalDepth = (Math.max(actions.length - 1, 0)) * zDepthScale;
+    const totalDepth = (Math.max(interactions.length - 1, 0)) * zDepthScale;
 
     // A. Draw Global Bounding Box & Axes (Now strictly separated and padded)
     const padding = 3; // Padding so the grids live *inside* the box
@@ -128,12 +128,12 @@ function updateVisualization() {
     const wireframeGeo = new THREE.SphereGeometry(0.35, 12, 12);
 
     // B. Render Z-Slices
-    actions.forEach((actionName, zIndex) => {
+    actions.forEach((item, zIndex) => {
         // Skip rendering the layer if it is toggled off
-        if (!layerVisibility[actionName]) return;
+        if (!layerVisibility[item.action]) return;
 
         const zPos = zIndex * zDepthScale - (totalDepth / 2);
-        const color = colors[zIndex % colors.length];
+        const color = colors[actions.indexOf(item.action) % colors.length];
 
         const layerGroup = new THREE.Group();
         layerGroup.position.set(0, 0, zPos);
