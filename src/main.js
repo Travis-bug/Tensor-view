@@ -128,7 +128,7 @@ function updateVisualization() {
     const wireframeGeo = new THREE.SphereGeometry(0.35, 12, 12);
 
     // B. Render Z-Slices
-    actions.forEach((item, zIndex) => {
+    interactions.forEach((item, zIndex) => {
         // Skip rendering the layer if it is toggled off
         if (!layerVisibility[item.action]) return;
 
