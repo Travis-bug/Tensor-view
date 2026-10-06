@@ -162,13 +162,13 @@ function updateVisualization() {
     });
 
     // C. Render Active Interaction Nodes
-    interactions.forEach(item => {
+    interactions.forEach(item,zIndex => { // zindex = event number
         // Only render the node if the node is visible AND its corresponding layer is visible
         if (!item.visible || !layerVisibility[item.action]) return;
 
         const xIndex = actors.indexOf(item.doer);
         const yIndex = actors.indexOf(item.receiver);
-        interactions.forEach((item, zIndex) => { ... }) // zIndex = event number
+        
 
         const xPos = xIndex - offset;
         const yPos = -(yIndex - offset);
