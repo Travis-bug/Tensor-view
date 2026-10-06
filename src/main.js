@@ -162,7 +162,7 @@ function updateVisualization() {
     });
 
     // C. Render Active Interaction Nodes
-    interactions.forEach(item,zIndex => { // zindex = event number
+    interactions.forEach((item,zIndex) => { // zindex = event number
         // Only render the node if the node is visible AND its corresponding layer is visible
         if (!item.visible || !layerVisibility[item.action]) return;
 
