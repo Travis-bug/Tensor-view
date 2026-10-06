@@ -168,14 +168,16 @@ function updateVisualization() {
 
         const xIndex = actors.indexOf(item.doer);
         const yIndex = actors.indexOf(item.receiver);
-        const zIndex = actions.indexOf(item.action);
+        interactions.forEach((item, zIndex) => { ... }) // zIndex = event number
 
         const xPos = xIndex - offset;
         const yPos = -(yIndex - offset);
         const zPos = (zIndex * zDepthScale) - (totalDepth / 2);
 
-        const baseColor = new THREE.Color(colors[zIndex % colors.length]);
+        const colorIndex = actions.indexOf(item.action); 
+        const baseColor = new THREE.Color(colors[colorIndex % colors.length]);
         const darkerNodeColor = baseColor.clone().multiplyScalar(0.6);
+        
 
         const interactionGroup = new THREE.Group();
         interactionGroup.position.set(xPos, yPos, zPos);
